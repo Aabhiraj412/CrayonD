@@ -47,7 +47,7 @@ const Chat = () => {
 
     try {
     //   const res = await fetch(`${API_BASE_URL}/memory`, {
-      const res = await fetch(`http://localhost:8000/memory`, {
+      const res = await fetch(`https://crayond.onrender.com/memory`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -107,7 +107,7 @@ const Chat = () => {
     try {
       console.log("Sending clear memory request to:", `${API_BASE_URL}/clear-memory`);
       
-      const res = await fetch(`${API_BASE_URL}/clear-memory`, {
+      const res = await fetch(`https://crayond.onrender.com/clear-memory`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -266,7 +266,7 @@ const Chat = () => {
     setIsTyping(true);
 
     try {
-      const res = await fetch(`${API_BASE_URL}/chat`, {
+      const res = await fetch(`https://crayond.onrender.com/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -346,7 +346,7 @@ const Chat = () => {
           <View style={styles.headerLeft}>
             <View style={styles.logoContainer}>
               <Image
-                source={require('/media/abhiraj/D_Drive/Projects/CrayonD/APP/public/logo.jpg')}
+                source={require('./assets/logo.jpg')}
                 style={styles.logo}
                 resizeMode="cover"
               />

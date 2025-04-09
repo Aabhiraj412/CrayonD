@@ -25,7 +25,7 @@ const Chat = () => {
 		setLoading(true);
 
 		try {
-			const res = await fetch("http://localhost:8000/memory", {
+			const res = await fetch("https://crayond.onrender.com/memory", {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
@@ -78,7 +78,7 @@ const Chat = () => {
 	const clearMemory = async () => {
 		setLoading(true);
 		try {
-			const res = await fetch("http://localhost:8000/clear-memory", {
+			const res = await fetch("https://crayond.onrender.com/clear-memory", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -225,7 +225,7 @@ const Chat = () => {
 		setIsTyping(true);
 
 		try {
-			const res = await fetch("http://localhost:8000/chat", {
+			const res = await fetch("https://crayond.onrender.com/chat", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
