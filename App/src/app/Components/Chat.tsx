@@ -18,6 +18,7 @@ import {
 } from "react-native";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import Markdown from 'react-native-markdown-display'; // Add this import
 
 const Chat = () => {
   const [messages, setMessages] = useState<
@@ -459,6 +460,100 @@ const Chat = () => {
     };
   }, [loading, loadingDot1, loadingDot2, loadingDot3]);
 
+  // Function to render message content based on type and search term
+  const renderMessageContent = (text, sender, searchTerm = "") => {
+    if (sender === "user") {
+      return searchTerm ? (
+        highlightText(text, searchTerm)
+      ) : (
+        <Text style={[styles.messageText, styles.userMessageText]}>
+          {text}
+        </Text>
+      );
+    } else {
+      // For bot messages, use Markdown
+      if (searchTerm) {
+        return highlightText(text, searchTerm);
+      } else {
+        return (
+          <Markdown 
+            style={{
+              body: {
+                color: theme === "dark" ? "#f7fafc" : "#1a202c",
+                fontSize: 14,
+              },
+              code_block: {
+                backgroundColor: theme === "dark" ? "#2d3748" : "#edf2f7",
+                padding: 8,
+                borderRadius: 4,
+                fontFamily: 'monospace',
+              },
+              code_inline: {
+                backgroundColor: theme === "dark" ? "#2d3748" : "#edf2f7",
+                color: theme === "dark" ? "#f7fafc" : "#1a202c",
+                fontFamily: 'monospace',
+                padding: 4,
+                borderRadius: 2,
+              },
+              link: {
+                color: "#48bb78",
+                textDecorationLine: 'underline',
+              },
+              bullet_list: {
+                marginLeft: 16,
+              },
+              ordered_list: {
+                marginLeft: 16,
+              },
+              heading1: {
+                fontSize: 20,
+                fontWeight: 'bold',
+                marginTop: 8,
+                marginBottom: 4,
+              },
+              heading2: {
+                fontSize: 18,
+                fontWeight: 'bold',
+                marginTop: 8,
+                marginBottom: 4,
+              },
+              heading3: {
+                fontSize: 16,
+                fontWeight: 'bold',
+                marginTop: 8,
+                marginBottom: 4,
+              },
+              fence: {
+                marginVertical: 8,
+                padding: 8,
+                backgroundColor: theme === "dark" ? "#2d3748" : "#edf2f7",
+                borderRadius: 4,
+              },
+              table: {
+                borderWidth: 1,
+                borderColor: theme === "dark" ? "#4a5568" : "#cbd5e0",
+                marginVertical: 8,
+              },
+              tr: {
+                borderBottomWidth: 1,
+                borderColor: theme === "dark" ? "#4a5568" : "#cbd5e0",
+              },
+              th: {
+                padding: 6,
+                backgroundColor: theme === "dark" ? "#2d3748" : "#edf2f7",
+              },
+              td: {
+                padding: 6,
+              }
+            }}
+          >
+            {text}
+          </Markdown>
+        );
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={[styles.container, theme === "dark" ? styles.darkContainer : styles.lightContainer]}>
       <StatusBar barStyle={theme === "dark" ? "light-content" : "dark-content"} />
@@ -659,50 +754,39 @@ const Chat = () => {
           />
         }
       >
-        {messages.map((msg: { sender: "bot" | "user"; text: string }, index) => (
-          <View
-            key={index}
-            style={[
-              styles.messageContainer,
-              msg.sender === "user" ? styles.userMessageContainer : styles.botMessageContainer
-            ]}
-          >
-            <View style={styles.messageContent}>
-              {msg.sender === "bot" && (
-                <View style={styles.botIdentifier}>
-                  <View style={styles.botAvatar}>
-                    <Feather name="monitor" size={14} color="black" />
+        {messages.map((msg: { sender: "bot" | "user"; text: string }, index) => {
+          // Remove duplicate message by using a single return statement per iteration
+          return (
+            <View
+              key={index}
+              style={[
+                styles.messageContainer,
+                msg.sender === "user" ? styles.userMessageContainer : styles.botMessageContainer
+              ]}
+            >
+              <View style={styles.messageContent}>
+                {msg.sender === "bot" && (
+                  <View style={styles.botIdentifier}>
+                    <View style={styles.botAvatar}>
+                      <Feather name="monitor" size={14} color="black" />
+                    </View>
+                    <Text style={[styles.botName, theme === "dark" ? styles.textLightMuted : styles.textDarkMuted]}>
+                      CI Advisor
+                    </Text>
                   </View>
-                  <Text style={[styles.botName, theme === "dark" ? styles.textLightMuted : styles.textDarkMuted]}>
-                    CI Advisor
-                  </Text>
-                </View>
-              )}
-              <View style={[
-                styles.messageBubble,
-                msg.sender === "user" ? styles.userBubble : 
-                  theme === "dark" ? styles.botBubbleDark : styles.botBubbleLight,
-                searchResults.includes(index) && searchResults[currentResult] === index && styles.highlightedBubble
-              ]}>
-                {msg.sender === "bot" ? (
-                  <View>
-                    {searchTerm ? (
-                      highlightText(msg.text, searchTerm)
-                    ) : (
-                      <Text style={[styles.messageText, msg.sender === "user" ? styles.userMessageText : (msg.sender === "bot" && theme === "dark" ? styles.botMessageTextDark : styles.botMessageTextLight)]}>
-                        {msg.text}
-                      </Text>
-                    )}
-                  </View>
-                ) : (
-                  <Text style={[styles.messageText, styles.userMessageText]}>
-                    {searchTerm ? highlightText(msg.text, searchTerm) : msg.text}
-                  </Text>
                 )}
+                <View style={[
+                  styles.messageBubble,
+                  msg.sender === "user" ? styles.userBubble : 
+                    theme === "dark" ? styles.botBubbleDark : styles.botBubbleLight,
+                  searchResults.includes(index) && searchResults[currentResult] === index && styles.highlightedBubble
+                ]}>
+                  {renderMessageContent(msg.text, msg.sender, searchTerm)}
+                </View>
               </View>
             </View>
-          </View>
-        ))}
+          );
+        })}
 
         {isTyping && (
           <View style={styles.botMessageContainer}>

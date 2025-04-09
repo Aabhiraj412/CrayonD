@@ -2,6 +2,10 @@
 
 An AI-powered Competitive Intelligence (CI) Advisor that provides real-time competitor analysis, strategic insights, and market news summaries. Built with **LangChain**, **FastAPI**, **Supabase VectorDB**, and a modern **React** frontend.
 
+## 📱 Live Demo
+
+- **Web App**: [https://crayon-d-red.vercel.app/](https://crayon-d-red.vercel.app/)
+- **Mobile App**: [Download on Expo](https://expo.dev/accounts/abhiraj_dixit/projects/crayon-d/builds/332f3d9f-0c0e-4cc2-8ed4-f4c4363acf48)
 
 ## 🚀 Features
 
@@ -20,6 +24,15 @@ An AI-powered Competitive Intelligence (CI) Advisor that provides real-time comp
 
 ```
 /CrayonD/
+├── App/
+│   ├── assets/                # Main app entrypoint
+│   ├── src/                   # React Native components
+│   │   └── app/
+│   │       ├── Components
+│   │       │   ├── assets/
+│   │       │   └──Chat.tsx
+│   │       └── index.tsx
+│   └── app.json              # Expo configuration
 ├── backend/
 │   ├── main.py               # FastAPI app entrypoint
 │   ├── agent.py              # LangChain agent setup
@@ -27,7 +40,7 @@ An AI-powered Competitive Intelligence (CI) Advisor that provides real-time comp
 │   ├── .env                  # API keys and secrets
 │   └── tools/
 │       ├── news_tool.py      # Market news aggregator
-│       ├── market_tool.py    # Competitor analysis tool
+│       └── market_tool.py    # Competitor analysis tool
 ├── frontend/
 │   ├── public/               # Static assets
 │   └── src/
@@ -101,6 +114,23 @@ npm install # or bun install if you're using bun
 npm run dev # or bun dev
 ```
 
+### 4. Mobile App Setup
+
+📁 Navigate to App:
+```bash=
+cd ../App
+```
+
+📦 Install dependencies:
+```bash
+npm install
+```
+
+▶️ Start Expo:
+```bash
+expo start
+```
+
 ## 🌐 API Endpoints
 
 | Method | Endpoint | Description |
@@ -118,17 +148,6 @@ npm run dev # or bun dev
        service options. Azure leverages existing Microsoft relationships, while 
        AWS emphasizes scalability and first-mover advantage...
 ```
-
-## 📱 Screenshots
-
-<div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-  <img src="/api/placeholder/400/200" alt="Dashboard" width="48%" />
-  <img src="/api/placeholder/400/200" alt="Chat Interface" width="48%" />
-</div>
-<div style="display: flex; justify-content: space-between;">
-  <img src="/api/placeholder/400/200" alt="Competitor Analysis" width="48%" />
-  <img src="/api/placeholder/400/200" alt="Market Trends" width="48%" />
-</div>
 
 ## 📌 Tech Stack
 
@@ -157,19 +176,31 @@ npm run dev # or bun dev
 - TypeScript 5+ (optional)
 - Vitest for testing
 
+### Mobile
+- Node.js 16+
+- React Native 0.70+
+- Expo SDK 46+
+- React Navigation 6+
+- TypeScript 5+ (optional)
+
 ## 🚀 Deployment
 
 ### Backend
-Can be deployed on:
+Currently deployed at:
+- [Render](https://render.com)
+
+Other deployment options:
 - Railway
-- Render
 - DigitalOcean App Platform
 - AWS Lambda with API Gateway
 - Google Cloud Run
 
 ### Frontend
-Ready for deployment on:
-- Vercel
+Currently deployed at:
+- Web: [https://crayon-d-red.vercel.app/](https://crayon-d-red.vercel.app/) (Vercel)
+- Mobile: [Expo](https://expo.dev/accounts/abhiraj_dixit/projects/crayon-d/builds/332f3d9f-0c0e-4cc2-8ed4-f4c4363acf48)
+
+Other deployment options:
 - Netlify
 - GitHub Pages
 - AWS Amplify
