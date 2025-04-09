@@ -5,7 +5,7 @@ An AI-powered Competitive Intelligence (CI) Advisor that provides real-time comp
 ## 📱 Live Demo
 
 - **Web App**: [https://crayon-d-red.vercel.app/](https://crayon-d-red.vercel.app/)
-- **Mobile App**: [Download on Expo](https://expo.dev/accounts/abhiraj_dixit/projects/crayon-d/builds/332f3d9f-0c0e-4cc2-8ed4-f4c4363acf48)
+- **Mobile App**: [Download on Expo](https://expo.dev/accounts/abhiraj_dixit/projects/crayon-d/builds/54ea0819-edd1-493d-91c6-7eb407fd9903)
 
 ## 🚀 Features
 
@@ -198,7 +198,7 @@ Other deployment options:
 ### Frontend
 Currently deployed at:
 - Web: [https://crayon-d-red.vercel.app/](https://crayon-d-red.vercel.app/) (Vercel)
-- Mobile: [Expo](https://expo.dev/accounts/abhiraj_dixit/projects/crayon-d/builds/332f3d9f-0c0e-4cc2-8ed4-f4c4363acf48)
+- Mobile: [Expo](https://expo.dev/accounts/abhiraj_dixit/projects/crayon-d/builds/54ea0819-edd1-493d-91c6-7eb407fd9903)
 
 Other deployment options:
 - Netlify
