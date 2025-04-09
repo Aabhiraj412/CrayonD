@@ -18,6 +18,10 @@ google-api-core==2.24.2
 google-api-python-client==2.166.0
 google-auth==2.38.0
 google-auth-httplib2==0.2.0
+google-ai-generativelanguage==0.6.15
+google-generativeai==0.8.4
+# Remove or downgrade langchain-google-genai to avoid conflict
+langchain-google-genai==2.0.2  # Compatible with 0.6.15
 # Removed google-generativeai due to conflict
 googleapis-common-protos==1.69.2
 gotrue==2.12.0
