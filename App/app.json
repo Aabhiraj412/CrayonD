@@ -14,7 +14,34 @@
         }
       ]
     ],
-    "name": "APP",
-    "slug": "APP"
+    "name": "Crayon D",
+    "slug": "crayon-d",
+    "icon": "./assets/logo.png",
+    "splash": {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#48bb78"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo.png",
+        "backgroundColor": "#48bb78"
+      },
+      "package": "com.abhiraj_dixit.crayond"
+    },
+    "extra": {
+      "router": {
+        "origin": "https://n"
+      },
+      "eas": {
+        "projectId": "a211dfeb-6885-46a2-a404-e8304d201fb2"
+      }
+    }
   }
 }

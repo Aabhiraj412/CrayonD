@@ -7,10 +7,10 @@ const App = () => {
 	return (
 		<>
 			<Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/chat" element={<Chat/>} />
-        <Route path="*" element={<div>404 Not Found</div>} />
-      </Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/chat" element={<Chat />} />
+				<Route path="*" element={<div>404 Not Found</div>} />
+			</Routes>
 		</>
 	);
 };

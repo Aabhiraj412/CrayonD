@@ -13,6 +13,8 @@ import {
   SafeAreaView,
   StatusBar,
   FlatList,
+  RefreshControl,
+  Easing,
 } from "react-native";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -40,6 +42,20 @@ const Chat = () => {
   const API_BASE_URL = 'http://10.0.2.2:8000'; // For Android emulator
   // If using iOS simulator, use 'http://localhost:8000' or your computer's local IP
   // If testing on physical device, use your computer's local network IP like 'http://192.168.1.X:8000'
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Add onRefresh function to handle pull-to-refresh
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await loadMessages();
+    } catch (error) {
+      console.log("Error refreshing messages:", error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   // Updated loadMessages function with proper React Native API URL
   const loadMessages = async () => {
@@ -317,6 +333,132 @@ const Chat = () => {
     }, 0);
   };
 
+  // Add animation values for typing dots
+  const typingDot1 = useRef(new Animated.Value(0)).current;
+  const typingDot2 = useRef(new Animated.Value(0)).current;
+  const typingDot3 = useRef(new Animated.Value(0)).current;
+
+  // Add animation values for loading dots
+  const loadingDot1 = useRef(new Animated.Value(0)).current;
+  const loadingDot2 = useRef(new Animated.Value(0)).current;
+  const loadingDot3 = useRef(new Animated.Value(0)).current;
+
+  // Animation for typing indicator
+  useEffect(() => {
+    if (isTyping) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(typingDot1, {
+            toValue: 1,
+            duration: 400,
+            useNativeDriver: true,
+            easing: Easing.ease,
+          }),
+          Animated.timing(typingDot2, {
+            toValue: 1,
+            duration: 400,
+            useNativeDriver: true,
+            easing: Easing.ease,
+          }),
+          Animated.timing(typingDot3, {
+            toValue: 1,
+            duration: 400,
+            useNativeDriver: true,
+            easing: Easing.ease,
+          }),
+          Animated.timing(typingDot1, {
+            toValue: 0,
+            duration: 400,
+            useNativeDriver: true,
+            easing: Easing.ease,
+          }),
+          Animated.timing(typingDot2, {
+            toValue: 0,
+            duration: 400,
+            useNativeDriver: true,
+            easing: Easing.ease,
+          }),
+          Animated.timing(typingDot3, {
+            toValue: 0,
+            duration: 400,
+            useNativeDriver: true,
+            easing: Easing.ease,
+          }),
+        ])
+      ).start();
+    } else {
+      // Reset animations when not typing
+      typingDot1.setValue(0);
+      typingDot2.setValue(0);
+      typingDot3.setValue(0);
+    }
+
+    return () => {
+      // Cleanup animations
+      typingDot1.setValue(0);
+      typingDot2.setValue(0);
+      typingDot3.setValue(0);
+    };
+  }, [isTyping, typingDot1, typingDot2, typingDot3]);
+
+  // Animation for loading overlay
+  useEffect(() => {
+    if (loading) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(loadingDot1, {
+            toValue: 1,
+            duration: 400,
+            useNativeDriver: true,
+            easing: Easing.ease,
+          }),
+          Animated.timing(loadingDot2, {
+            toValue: 1,
+            duration: 400,
+            useNativeDriver: true,
+            easing: Easing.ease,
+          }),
+          Animated.timing(loadingDot3, {
+            toValue: 1,
+            duration: 400,
+            useNativeDriver: true,
+            easing: Easing.ease,
+          }),
+          Animated.timing(loadingDot1, {
+            toValue: 0,
+            duration: 400,
+            useNativeDriver: true,
+            easing: Easing.ease,
+          }),
+          Animated.timing(loadingDot2, {
+            toValue: 0,
+            duration: 400,
+            useNativeDriver: true,
+            easing: Easing.ease,
+          }),
+          Animated.timing(loadingDot3, {
+            toValue: 0,
+            duration: 400,
+            useNativeDriver: true,
+            easing: Easing.ease,
+          }),
+        ])
+      ).start();
+    } else {
+      // Reset animations when not loading
+      loadingDot1.setValue(0);
+      loadingDot2.setValue(0);
+      loadingDot3.setValue(0);
+    }
+
+    return () => {
+      // Cleanup animations
+      loadingDot1.setValue(0);
+      loadingDot2.setValue(0);
+      loadingDot3.setValue(0);
+    };
+  }, [loading, loadingDot1, loadingDot2, loadingDot3]);
+
   return (
     <SafeAreaView style={[styles.container, theme === "dark" ? styles.darkContainer : styles.lightContainer]}>
       <StatusBar barStyle={theme === "dark" ? "light-content" : "dark-content"} />
@@ -327,9 +469,36 @@ const Chat = () => {
           <View style={styles.loadingOverlay}>
             <View style={styles.loadingContainer}>
               <View style={styles.loadingDotsContainer}>
-                <Animated.View style={[styles.loadingDot, styles.greenDot, { opacity: 1 }]} />
-                <Animated.View style={[styles.loadingDot, styles.greenDot, { opacity: 0.8 }]} />
-                <Animated.View style={[styles.loadingDot, styles.greenDot, { opacity: 0.6 }]} />
+                <Animated.View 
+                  style={[
+                    styles.loadingDot, 
+                    styles.greenDot, 
+                    { opacity: loadingDot1, transform: [{ scale: loadingDot1.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0.7, 1]
+                    }) }] }
+                  ]} 
+                />
+                <Animated.View 
+                  style={[
+                    styles.loadingDot, 
+                    styles.greenDot, 
+                    { opacity: loadingDot2, transform: [{ scale: loadingDot2.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0.7, 1]
+                    }) }] }
+                  ]} 
+                />
+                <Animated.View 
+                  style={[
+                    styles.loadingDot, 
+                    styles.greenDot, 
+                    { opacity: loadingDot3, transform: [{ scale: loadingDot3.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0.7, 1]
+                    }) }] }
+                  ]} 
+                />
               </View>
               <Text style={styles.loadingText}>Loading...</Text>
             </View>
@@ -474,13 +643,23 @@ const Chat = () => {
         </View>
       </View>
 
-      {/* Chat Window */}
+      {/* Chat Window with RefreshControl */}
       <ScrollView 
         ref={scrollViewRef} 
         style={styles.chatWindow}
         contentContainerStyle={styles.chatContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={['#48bb78']} // Android
+            tintColor={theme === 'dark' ? '#48bb78' : '#38a169'} // iOS
+            title="Refreshing messages..."
+            titleColor={theme === 'dark' ? '#f7fafc' : '#1a202c'}
+          />
+        }
       >
-        {messages.map((msg, index) => (
+        {messages.map((msg: { sender: "bot" | "user"; text: string }, index) => (
           <View
             key={index}
             style={[
@@ -541,9 +720,27 @@ const Chat = () => {
                 theme === "dark" ? styles.botBubbleDark : styles.botBubbleLight
               ]}>
                 <View style={styles.typingIndicator}>
-                  <Animated.View style={styles.typingDot} />
-                  <Animated.View style={[styles.typingDot, { marginLeft: 4 }]} />
-                  <Animated.View style={[styles.typingDot, { marginLeft: 4 }]} />
+                  <Animated.View style={[
+                    styles.typingDot, 
+                    { opacity: typingDot1, transform: [{ scale: typingDot1.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0.7, 1]
+                    }) }] }
+                  ]} />
+                  <Animated.View style={[
+                    styles.typingDot, 
+                    { marginLeft: 4, opacity: typingDot2, transform: [{ scale: typingDot2.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0.7, 1]
+                    }) }] }
+                  ]} />
+                  <Animated.View style={[
+                    styles.typingDot, 
+                    { marginLeft: 4, opacity: typingDot3, transform: [{ scale: typingDot3.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0.7, 1]
+                    }) }] }
+                  ]} />
                 </View>
               </View>
             </View>
