@@ -13,6 +13,7 @@ memory = get_memory()
 
 # 🚀 FastAPI setup
 app = FastAPI()
+
 # 🌐 CORS middleware
 app.add_middleware(
     CORSMiddleware,
@@ -21,16 +22,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 # 📦 Request schema
-class ChatRequest(BaseModel):
+class Chat(BaseModel):
     query: str
+
 # 🏠 Root route
 @app.get("/")
 def read_root():
     return {"message": "🔍 Competitive Intelligence Chatbot is ready!"}
+
 # 💬 Chat endpoint
 @app.post("/chat")
-async def chat_endpoint(request: ChatRequest):
+async def chat_endpoint(request: Chat):
     query = request.query
     print(f"🧠 You: {query}")
     try:
@@ -71,6 +75,7 @@ def get_memory_messages():
 def clear_memory():
     memory.clear()
     return {"status": "Memory cleared"}
+
 # 🚀 Run server
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

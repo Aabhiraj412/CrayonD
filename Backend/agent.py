@@ -15,6 +15,7 @@ from memory import get_memory  # ✅ this gets Supabase-based memory
 
 # 🔐 Configure Gemini
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+
 # 🤖 LLM Setup
 llm = ChatGoogleGenerativeAI(
     model="models/gemini-1.5-flash-latest",

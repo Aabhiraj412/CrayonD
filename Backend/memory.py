@@ -5,9 +5,18 @@ from langchain.memory import ConversationBufferMemory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.messages import BaseMessage, messages_from_dict, messages_to_dict
 from supabase import create_client
-from config import SUPABASE_URL, SUPABASE_KEY
 
-class SupabaseChatMessageHistory(BaseChatMessageHistory):
+# Load environment variables
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Load from .env
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+
+
+class SupabaseChatMessages(BaseChatMessageHistory):
     def __init__(self, table_name: str, client):
         self.table_name = table_name
         self.session_id = "temp_session"
@@ -51,7 +60,7 @@ class SupabaseChatMessageHistory(BaseChatMessageHistory):
 
 def get_memory():
     supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-    message_history = SupabaseChatMessageHistory(
+    message_history = SupabaseChatMessages(
         table_name="chat_memory",
         client=supabase
     )
